@@ -6,10 +6,9 @@ using UnityEngine.UI;
 
 public class TimerController : MonoBehaviour
 {
-    private float originWorkTime = 25 * 60 * 1000f;
-    private float originBreakTime = 5 * 60 * 1000f;
+    private float originWorkTime = 25f;
+    private float originBreakTime = 5f;
     private float countdownTime;
-
 
     [SerializeField]
     private Text timerText;
@@ -18,13 +17,22 @@ public class TimerController : MonoBehaviour
     void Start()
     {
         timerText = GetComponent<Text>();
-        countdownTime = originWorkTime;
+        countdownTime = originWorkTime * 60;
+        timerText.text = originWorkTime.ToString() + ":00";
     }
 
     // Update is called once per frame
     void Update()
     {
         countdownTime = countdownTime - Time.deltaTime;
-        timerText.text = Math.Round(countdownTime).ToString();
+        int minute = Convert.ToInt32(Math.Floor(countdownTime / 60));
+        float secondInFloat = countdownTime / 60 - minute;
+        int second = Convert.ToInt32(Math.Floor(secondInFloat * 60));
+        timerText.text = minute.ToString() + ":" + second.ToString();
+    }
+
+    public void onStart(String name)
+    {
+        print("Name: " + name);
     }
 }
